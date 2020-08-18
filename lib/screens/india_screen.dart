@@ -141,7 +141,8 @@ class IndiaScreen extends StatelessWidget with PieChartOfCases {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
-                  else
+                  else {
+//                    snapshot.data.sort((a,b)=> b.totalCases.compareTo(a.totalCases));
                     return ListView.builder(
                       itemCount: snapshot.data.length,
                       itemBuilder: (BuildContext context, index) {
@@ -193,6 +194,7 @@ class IndiaScreen extends StatelessWidget with PieChartOfCases {
                         );
                       },
                     );
+                  }
                 }),
           ),
         ],
