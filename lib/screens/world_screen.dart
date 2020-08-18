@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'file:///C:/Users/lenovo/Desktop/AndroidStudioProjects/time_tracking_app/covid19_tracker/lib/constants/api_urls.dart';
-import 'file:///C:/Users/lenovo/Desktop/AndroidStudioProjects/time_tracking_app/covid19_tracker/lib/models/world_country.dart';
+import 'package:covid19tracker/constants/api_urls.dart';
+import 'package:covid19tracker/models/world_country.dart';
 import 'package:covid19tracker/mixins/pie_chart_section_data.dart';
 import 'package:covid19tracker/models/total_data_of_world.dart';
 import 'package:covid19tracker/widgets/loading_bar_for_total_data.dart';
