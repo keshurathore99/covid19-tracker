@@ -1,8 +1,8 @@
-import 'package:covid19tracker/screens/WorldScreen.dart';
+import 'package:covid19tracker/screens/world_screen.dart';
 import 'package:flutter/material.dart';
-import 'screens/IndiaScreen.dart';
+import 'screens/india_screen.dart';
 
-import 'screens/MainScreen.dart';
+import 'screens/main_screen.dart';
 
 void main() => runApp(MyApp());
 

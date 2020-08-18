@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'IndiaScreen.dart';
-import 'WorldScreen.dart';
+import 'india_screen.dart';
+import 'world_screen.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = '/mainScreen';
