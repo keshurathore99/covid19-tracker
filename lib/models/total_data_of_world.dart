@@ -1,4 +1,6 @@
-class TotalData {
+import 'package:flutter/foundation.dart';
+
+class TotalDataOfWorld {
   int totalCases,
       totalDeaths,
       activeCases,
@@ -8,13 +10,13 @@ class TotalData {
       critical,
       totalTests;
 
-  TotalData(
-      {this.totalCases,
-      this.totalDeaths,
-      this.activeCases,
-      this.recovered,
-      this.todayCases,
-      this.todayDeaths,
-      this.critical,
-      this.totalTests});
+  TotalDataOfWorld(
+      {@required this.totalCases,
+      @required this.totalDeaths,
+      @required this.activeCases,
+      @required this.recovered,
+      @required this.todayCases,
+      @required this.todayDeaths,
+      @required this.critical,
+      @required this.totalTests});
 }

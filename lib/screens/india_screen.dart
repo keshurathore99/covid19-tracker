@@ -28,7 +28,9 @@ class IndiaScreen extends StatelessWidget with PieChartOfCases {
               future: dataOfIndia(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LoadingBarForTotalData();
+                  return LoadingBarForTotalData(
+                    expandedFlex: 3,
+                  );
                 } else {
                   int active = snapshot.data.active;
                   int total = snapshot.data.total;

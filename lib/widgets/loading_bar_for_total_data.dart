@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class LoadingBarForTotalData extends StatelessWidget {
+  final int expandedFlex;
+  LoadingBarForTotalData({@required this.expandedFlex});
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 3,
+        flex: expandedFlex,
         child: Container(
           child: Card(
             child: Center(

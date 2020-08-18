@@ -6,7 +6,7 @@ class WorldTotalDataRow extends StatelessWidget {
   final String label;
   final bool isThereTodayCases;
   final double showIcon;
-  final Color iconColor;
+  final Color iconColor, todayCasesTextColor;
 
   WorldTotalDataRow(
       {@required this.totalCases,
@@ -14,7 +14,8 @@ class WorldTotalDataRow extends StatelessWidget {
       this.todayCases,
       this.isThereTodayCases: false,
       this.showIcon: 0,
-      this.iconColor: Colors.black});
+      this.iconColor: Colors.black,
+      this.todayCasesTextColor: Colors.blueAccent});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class WorldTotalDataRow extends StatelessWidget {
           if (isThereTodayCases)
             Text(
               '+${todayCases.toString()}',
-              style: TextStyle(fontSize: 10, color: Colors.blueAccent),
+              style: TextStyle(fontSize: 10, color: todayCasesTextColor),
             ),
           Opacity(
               opacity: showIcon,
