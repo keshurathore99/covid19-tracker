@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'file:///C:/Users/lenovo/Desktop/AndroidStudioProjects/time_tracking_app/covid19_tracker/lib/constants/api_urls.dart';
 import 'file:///C:/Users/lenovo/Desktop/AndroidStudioProjects/time_tracking_app/covid19_tracker/lib/models/world_country.dart';
+import 'package:covid19tracker/mixins/pie_chart_section_data.dart';
+import 'package:covid19tracker/widgets/loading_bar_for_total_data.dart';
+import 'package:covid19tracker/widgets/world_countries_data_row.dart';
 import 'package:covid19tracker/widgets/world_total_data_row.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class WorldScreen extends StatefulWidget {
+class WorldScreen extends StatelessWidget with PieChartOfCases {
   static const routeName = '/worldScreen';
 
   static double getPercentage(var cases, var totalCases) {
@@ -15,11 +18,6 @@ class WorldScreen extends StatefulWidget {
     return percentage;
   }
 
-  @override
-  _WorldScreenState createState() => _WorldScreenState();
-}
-
-class _WorldScreenState extends State<WorldScreen> {
   int totalCases = 0,
       totalDeaths = 0,
       activeCases = 0,
@@ -28,7 +26,6 @@ class _WorldScreenState extends State<WorldScreen> {
       todayDeaths = 0,
       critical = 0,
       totalTests = 0;
-  bool loader = true;
 
   @override
   Widget build(BuildContext context) {
@@ -56,116 +53,69 @@ class _WorldScreenState extends State<WorldScreen> {
                               PieChartData(
                                   borderData: FlBorderData(show: false),
                                   sections: [
-                                    PieChartSectionData(
-                                        showTitle: true,
-                                        titleStyle: TextStyle(
-                                            color: Colors.white, fontSize: 10),
-                                        value: WorldScreen.getPercentage(
-                                            activeCases, totalCases),
-                                        title:
-                                            '${WorldScreen.getPercentage(activeCases, totalCases).toStringAsFixed(1)}%',
-                                        color: Colors.blueAccent,
-                                        radius: 30),
-                                    PieChartSectionData(
-                                        showTitle: true,
-                                        value: WorldScreen.getPercentage(
-                                            recovered, totalCases),
-                                        title:
-                                            '${WorldScreen.getPercentage(recovered, totalCases).toStringAsFixed(1)}%',
-                                        titleStyle: TextStyle(
-                                            fontSize: 10, color: Colors.white),
-                                        color: Colors.green,
-                                        radius: 30),
-                                    PieChartSectionData(
-                                        showTitle: true,
-                                        titleStyle: TextStyle(
-                                            color: Colors.white, fontSize: 10),
-                                        value: WorldScreen.getPercentage(
-                                            totalDeaths, totalCases),
-                                        title:
-                                            '${WorldScreen.getPercentage(totalDeaths, totalCases).toStringAsFixed(1)}%',
-                                        color: Colors.red,
-                                        radius: 30),
+                                    pieChartSectionData(
+                                        total: totalCases,
+                                        cases: activeCases,
+                                        color: Colors.blueAccent),
+                                    pieChartSectionData(
+                                        total: totalCases,
+                                        cases: recovered,
+                                        color: Colors.green),
+                                    pieChartSectionData(
+                                        total: totalCases,
+                                        cases: totalDeaths,
+                                        color: Colors.red),
                                   ]),
                             ),
                           ),
                           Expanded(
-                            flex: 10,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                WorldTotalDataRow(
-                                  todayCases: todayCases,
-                                  totalCases: totalCases,
-                                ),
-                                WorldTotalDataRow(
-                                  totalCases: activeCases,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Recovered : $recovered',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Icon(
-                                      Icons.stop,
-                                      color: Colors.green,
-                                      size: 18,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      'Deaths : $totalDeaths',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Text(
-                                      '+${todayDeaths.toString()}',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontSize: 10, color: Colors.red[900]),
-                                    ),
-                                    Icon(
-                                      Icons.stop,
-                                      color: Colors.red[800],
-                                      size: 18,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Tests : $totalTests',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Critical : ${critical.toString()}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                )
-                              ],
+                            flex: 12,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  WorldTotalDataRow(
+                                    label: 'Total',
+                                    totalCases: totalCases,
+                                    isThereTodayCases: true,
+                                    todayCases: todayCases,
+                                    showIcon: 0,
+                                  ),
+                                  WorldTotalDataRow(
+                                    totalCases: activeCases,
+                                    label: 'Active',
+                                    showIcon: 1,
+                                    iconColor: Colors.blueAccent,
+                                  ),
+                                  WorldTotalDataRow(
+                                    totalCases: recovered,
+                                    label: 'Recovered',
+                                    showIcon: 1,
+                                    iconColor: Colors.green,
+                                  ),
+                                  WorldTotalDataRow(
+                                    totalCases: totalDeaths,
+                                    label: 'Deaths',
+                                    showIcon: 1,
+                                    isThereTodayCases: true,
+                                    todayCases: todayDeaths,
+                                    iconColor: Colors.red,
+                                  ),
+                                  WorldTotalDataRow(
+                                    totalCases: totalTests,
+                                    label: 'Tests',
+                                    showIcon: 0,
+                                  ),
+                                  WorldTotalDataRow(
+                                    totalCases: critical,
+                                    label: 'Critical',
+                                    showIcon: 0,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              children: <Widget>[],
-                            ),
-                          )
                         ],
                       ),
                     ),
@@ -184,6 +134,10 @@ class _WorldScreenState extends State<WorldScreen> {
                 child: FutureBuilder(
                   future: getListData(),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting)
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
                     return ListView.builder(
                         itemCount:
                             snapshot.data == null ? 0 : snapshot.data.length,
@@ -210,129 +164,32 @@ class _WorldScreenState extends State<WorldScreen> {
                                           child: Text(index.toString())),
                                     ],
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Total Cases',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            '${snapshot.data[index].totalCases.toString()}',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 2,
-                                          ),
-                                          Text(
-                                            '+${snapshot.data[index].todayCases.toString()}',
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.blueAccent),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  WorldCountriesDataRow(
+                                    label: 'Total Case',
+                                    cases: snapshot.data[index].totalCases,
+                                    isThereTodayCases: true,
+                                    todayCases: snapshot.data[index].todayCases,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Active ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            snapshot.data[index].activeCases
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  WorldCountriesDataRow(
+                                    label: 'Active',
+                                    cases: snapshot.data[index].activeCases,
+                                    isThereTodayCases: false,
+                                    todayCases: snapshot.data[index].todayCases,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Recovered',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        snapshot.data[index].recovered
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
+                                  WorldCountriesDataRow(
+                                    label: 'Recovered',
+                                    cases: snapshot.data[index].recovered,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Total Deaths',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          Text(
-                                            snapshot.data[index].totalDeaths
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 2,
-                                          ),
-                                          Text(
-                                            '+${snapshot.data[index].todayDeaths.toString()}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 10,
-                                                color: Colors.red[800]),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  WorldCountriesDataRow(
+                                    label: 'Total Deaths',
+                                    cases: snapshot.data[index].totalDeaths,
+                                    isThereTodayCases: true,
+                                    todayCases:
+                                        snapshot.data[index].todayDeaths,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        'Tests Till Now',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        snapshot.data[index].totalTests
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
+                                  WorldCountriesDataRow(
+                                    label: 'Tests Till Now',
+                                    cases: snapshot.data[index].totalTests,
                                   ),
                                 ],
                               ),
@@ -353,7 +210,6 @@ class _WorldScreenState extends State<WorldScreen> {
     Response response = await get(APIUrls.worldUrlOfToday);
     if (response.statusCode == 200) {
       var responseBody = await jsonDecode(response.body);
-      setState(() {
         totalCases = responseBody['cases'];
         totalDeaths = responseBody['deaths'];
         activeCases = responseBody['active'];
@@ -362,8 +218,6 @@ class _WorldScreenState extends State<WorldScreen> {
         todayDeaths = responseBody['todayDeaths'];
         critical = responseBody['critical'];
         totalTests = responseBody['tests'];
-        loader = false;
-      });
     }
   }
 

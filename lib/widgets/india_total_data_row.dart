@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:humanize/humanize.dart' as humanize;
 
 class IndiaTotalDataRow extends StatelessWidget {
   final String label;
@@ -23,7 +24,7 @@ class IndiaTotalDataRow extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
-        Text(cases.toString(),
+        Text(humanize.intComma(cases).toString(),
             style: TextStyle(fontWeight: FontWeight.w600)),
         Opacity(
           opacity: showIcon,
